@@ -2,7 +2,7 @@
 autoOpen: true # 打开工作空间时是否自动开启所有应用的预览
 apps:
   - port: 5000 # 应用的端口
-    run: pip install -i https://mirrors.tencent.com/pypi/simple/ -r ./requirements.txt && bash /usr/bin/start-vnc-session.sh && python ./app.py # 应用的启动命令
+    run: pip install -i https://mirrors.tencent.com/pypi/simple/ -r ./requirements.txt && bash /usr/bin/start-vnc-session.sh && python ./app.py # 应用启动命令
     root: ./web # 应用的启动目录
     name: Python Cloud Studio Demo # 应用名称
     description: Python Cloud Studio Demo Project # 应用描述
