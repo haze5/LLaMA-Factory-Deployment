@@ -8,3 +8,10 @@ apps:
     description: Python Cloud Studio Demo Project # 应用描述
     autoOpen: true # 打开工作空间时是否自动运行命令（优先级高于根级 autoOpen）
     autoPreview: true # 是否自动打开预览, 若无则默认为true
+  - port: 6080 # VNC 应用的端口 用于编写展示 GUI 程序的输出
+    run: bash /usr/bin/start-vnc-session.sh # VNC应用的启动命令
+    root: /usr/bin/ # 应用的启动目录
+    name: VNC # 应用名称
+    description: VNC # 应用描述
+    autoOpen: true # 打开工作空间时是否自动运行命令（优先级高于根级 autoOpen）
+    autoPreview: false # 是否自动打开预览, 若无则默认为true
