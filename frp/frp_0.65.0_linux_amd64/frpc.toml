@@ -1,0 +1,11 @@
+serverAddr = "127.0.0.1"
+serverPort = 7100
+auth.method = "token"
+auth.token = "your_secure_token_here"  # ⚠️ 必须修改成和frps.toml里一样的token！
+
+[[proxies]]
+name = "llamafactory-webui"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 7860
+remotePort = 7000

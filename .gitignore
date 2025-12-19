@@ -1,0 +1,87 @@
+# Python 虚拟环境
+venv/
+env/
+ENV/
+hf_venv/
+
+# 模型文件（太大，不适合上传到 GitHub）
+models/
+*.bin
+*.safetensors
+*.pt
+*.pth
+
+# 缓存和临时文件
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# # 数据集文件
+# data/
+# *.json
+# *.jsonl
+# *.csv
+# *.parquet
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDE 文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# Hugging Face 缓存
+huggingface_hub/
+.cache/
+llamaboard_cache/
+
+# # 模型权重和检查点
+# saves/
+# checkpoints/
+# outputs/
+# wandb/
+
+# 大型压缩文件
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# 临时日志
+logs/
+*.log
+
+# FRP 相关（可选，根据需要）
+# frp/frp_0.65.0_linux_amd64/
+# frp_0.65.0_linux_amd64.tar.gz
+
+# 其他工具缓存
+.cargo/
+.mypy_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 环境配置（可能包含敏感信息）
+.env
+.env.local
+.env.*.local
+
+# # 特定于项目的忽略
+# test.py
+# model_download.py

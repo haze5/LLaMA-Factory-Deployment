@@ -1,0 +1,18 @@
+bindAddr = "0.0.0.0"
+bindPort = 7100
+
+webServer.addr = "0.0.0.0"
+webServer.port = 7500
+webServer.user = "admin"
+webServer.password = "your_secure_password_here"
+
+log.to = "/workspace/frp/frps.log"
+log.level = "info"
+log.maxDays = 3
+
+auth.method = "token"
+auth.token = "your_secure_token_here"
+
+allowPorts = [
+    { start = 6000, end = 7000 },
+]
