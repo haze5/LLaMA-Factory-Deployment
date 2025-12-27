@@ -1,0 +1,14 @@
+{
+  "intent_recognition_train": {
+    "file_name": "processed/intent_train.json",
+    "formatting": "sharegpt"
+  },
+  "intent_recognition_eval": {
+    "file_name": "processed/intent_eval.json", 
+    "formatting": "sharegpt"
+  },
+  "intent_recognition_test": {
+    "file_name": "processed/intent_test.json",
+    "formatting": "sharegpt"
+  }
+}

@@ -1,0 +1,66 @@
+### model
+model_name_or_path: /workspace/models/DeepSeek-R1-Distill-Qwen-1.5B
+template: qwen
+
+### method
+stage: sft
+do_sample: false
+temperature: 0.1
+top_p: 0.9
+max_new_tokens: 64
+
+### dataset
+dataset: intent_recognition_train,intent_recognition_eval
+dataset_dir: /workspace/intent_recognition/data
+cutoff_len: 512
+reserved_roles: ["user", "assistant"]
+shuffle: true
+overwrite_cache: true
+
+### output
+output_dir: /workspace/intent_recognition/outputs/models/intent_recognition_qlora
+logging_steps: 10
+save_steps: 100
+plot_loss: true
+overwrite_output_dir: true
+
+### train
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 8
+learning_rate: 2.0e-5
+num_train_epochs: 5.0
+lr_scheduler_type: linear
+warmup_ratio: 0.1
+weight_decay: 0.01
+max_grad_norm: 1.0
+fp16: true
+
+### eval
+per_device_eval_batch_size: 4
+evaluation_strategy: epoch
+eval_steps: 100
+save_strategy: epoch
+load_best_model_at_end: true
+metric_for_best_model: eval_loss
+greater_is_better: false
+
+### quantization
+quantization_bit: 4
+quantization_type: nf4
+double_quantization: true
+
+### lora
+finetuning_type: lora
+lora_rank: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_target: q_proj,v_proj
+additional_target: 
+
+### gradient_checkpointing
+gradient_checkpointing: true
+use_reentrant: false
+
+### logging
+report_to: wandb
+run_name: intent_recognition_qlora

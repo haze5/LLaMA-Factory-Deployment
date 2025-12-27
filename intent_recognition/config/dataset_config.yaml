@@ -1,0 +1,67 @@
+# 意图识别数据集配置
+# 基于 LLaMA-Factory 数据集格式
+
+# 训练数据集配置
+intent_recognition_train:
+  file_name: processed/intent_train.json
+  formatting: sharegpt
+  columns:
+    messages: conversations
+  tags:
+    role_tag: from
+    content_tag: value
+    user_tag: human
+    assistant_tag: gpt
+
+# 验证数据集配置
+intent_recognition_eval:
+  file_name: processed/intent_eval.json
+  formatting: sharegpt
+  columns:
+    messages: conversations
+  tags:
+    role_tag: from
+    content_tag: value
+    user_tag: human
+    assistant_tag: gpt
+
+# 测试数据集配置
+intent_recognition_test:
+  file_name: processed/intent_test.json
+  formatting: sharegpt
+  columns:
+    messages: conversations
+  tags:
+    role_tag: from
+    content_tag: value
+    user_tag: human
+    assistant_tag: gpt
+
+# 意图类型定义
+intent_types:
+  - "query_flight"      # 查询航班
+  - "book_flight"        # 预订航班
+  - "cancel_flight"      # 取消航班
+  - "query_weather"      # 查询天气
+  - "set_reminder"       # 设置提醒
+  - "play_music"         # 播放音乐
+  - "send_message"       # 发送消息
+  - "make_call"          # 打电话
+  - "search_info"        # 搜索信息
+  - "navigation"         # 导航
+  - "restaurant_booking" # 餐厅预订
+  - "movie_booking"      # 电影预订
+  - "hotel_booking"      # 酒店预订
+  - "shopping"           # 购物
+  - "translation"        # 翻译
+  - "calculator"         # 计算器
+  - "timer"              # 计时器
+  - "alarm"              # 闹钟
+  - "note"               # 笔记
+  - "calendar"           # 日历
+  - "email"              # 邮件
+  - "file_management"    # 文件管理
+  - "system_control"     # 系统控制
+  - "general_chat"       # 通用聊天
+  - "greeting"           # 问候
+  - "goodbye"            # 告别

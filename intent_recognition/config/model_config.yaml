@@ -1,0 +1,51 @@
+### model
+model_name_or_path: /workspace/models/DeepSeek-R1-Distill-Qwen-1.5B
+template: qwen
+
+### method
+stage: sft
+do_sample: false
+temperature: 0.1
+top_p: 0.9
+top_k: 50
+repetition_penalty: 1.1
+num_return_sequences: 1
+max_new_tokens: 512
+
+### dataset
+dataset: intent_recognition_train,intent_recognition_eval
+dataset_dir: /workspace/intent_recognition/data
+cutoff_len: 1024
+reserved_roles: ["user", "assistant"]
+token_num_factor: 1.3
+shuffle: true
+
+### output
+output_dir: /workspace/intent_recognition/outputs/models/intent_recognition_lora
+logging_steps: 10
+save_steps: 500
+plot_loss: true
+overwrite_output_dir: true
+
+### train
+per_device_train_batch_size: 4
+gradient_accumulation_steps: 4
+learning_rate: 5.0e-5
+num_train_epochs: 3.0
+lr_scheduler_type: cosine
+warmup_steps: 100
+fp16: true
+
+### eval
+per_device_eval_batch_size: 8
+evaluation_strategy: epoch
+eval_steps: 500
+predict_with_generate: false
+
+### lora
+finetuning_type: lora
+lora_rank: 8
+lora_alpha: 16
+lora_dropout: 0.1
+lora_target: all
+additional_target: embed_tokens,lm_head
