@@ -1,8 +1,12 @@
-# LLaMA-Factory 部署项目
+# AI Assistant 项目
 
-这是一个基于 [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory) 的大模型微调框架部署项目，提供了零代码微调百余种大模型的完整解决方案。
+本项目包含两个核心模块：
+- **LLaMA-Factory**: 大模型微调框架，提供零代码微调百余种大模型的完整解决方案
+- **RAG 对话机器人**: 基于检索增强生成的个人对话机器人，使用自己的聊天记录作为知识库
 
 ## 🚀 项目特性
+
+### LLaMA-Factory 模块
 
 - **零代码微调**：提供 Web UI 和命令行两种操作方式
 - **支持百余种大模型**：包括 LLaMA、Qwen、DeepSeek 等
@@ -20,7 +24,7 @@
 
 ## 🛠️ 快速开始
 
-### 1. 环境安装
+### 环境安装
 
 ```bash
 # 克隆项目
@@ -33,8 +37,11 @@ source venv/bin/activate  # Linux/Mac
 # 或
 venv\Scripts\activate     # Windows
 
-# 安装依赖
+# 安装 LLaMA-Factory 依赖
 pip install -r requirements.txt
+
+# 安装 RAG 额外依赖（如需使用 RAG 功能）
+pip install -r rag_requirements.txt
 ```
 
 ### 2. 启动方式
@@ -74,7 +81,7 @@ llamafactory-cli train \
 ## 📁 项目结构
 
 ```
-├── LLaMA-Factory/           # 主项目目录
+├── LLaMA-Factory/           # 大模型微调框架
 │   ├── src/                 # 源代码
 │   │   ├── api.py          # API 服务入口
 │   │   ├── train.py        # 训练入口
@@ -84,11 +91,27 @@ llamafactory-cli train \
 │   ├── examples/           # 示例配置文件
 │   ├── scripts/            # 工具脚本
 │   └── requirements.txt    # 依赖列表
+├── rag/                    # RAG 对话机器人模块
+│   ├── rag_pipeline.py      # RAG 管道
+│   ├── document_loader.py   # 文档加载器
+│   ├── text_splitter.py     # 文本分块器
+│   ├── embeddings.py        # 向量嵌入
+│   ├── vector_store.py      # 向量数据库
+│   ├── knowledge/           # 知识库目录
+│   └── README.md
+├── intent_recognition/     # 意图识别模块
+│   ├── config/              # 配置文件
+│   ├── data/                # 数据集
+│   ├── scripts/             # 工具脚本
+│   └── README.md
 ├── models/                 # 预训练模型
 │   ├── DeepSeek-R1-Distill-Qwen-1.5B/
 │   └── Qwen2.5-7B-Instruct/
 ├── frp/                    # 内网穿透工具
-└── README.md              # 项目说明
+├── chat_bot.py            # RAG 终端入口
+├── requirements.txt        # LLaMA-Factory 依赖
+├── rag_requirements.txt   # RAG 额外依赖
+└── README.md
 ```
 
 ## 🎯 预装模型
@@ -104,6 +127,8 @@ llamafactory-cli train \
    - 适合生产环境使用
 
 ## 🔧 配置说明
+
+### LLaMA-Factory 配置
 
 ### 环境配置
 
@@ -139,6 +164,23 @@ MASTER_PORT=29500
   }
 }
 ```
+
+### RAG 配置
+
+RAG 系统的配置可以在以下文件中调整：
+
+| 文件 | 说明 |
+|------|------|
+| `chat_bot.py` | 主入口，配置模型路径和目录 |
+| `rag/rag_pipeline.py` | RAG 管道，调整 top_k、chunk_size 等参数 |
+| `rag/embeddings.py` | 嵌入模型选择 |
+| `rag/vector_store.py` | 向量数据库配置 |
+
+默认配置：
+- 检索数量 (top_k): 3
+- 文档块大小 (chunk_size): 500
+- 文档块重叠 (chunk_overlap): 50
+- 嵌入模型: BAAI/bge-small-zh-v1.5
 
 ## 🚀 内网穿透
 
@@ -187,6 +229,13 @@ cd frp/frp_0.65.0_linux_amd64/
 - **内存优化**: Flash Attention、Gradient Checkpointing
 - **推理加速**: vLLM、SGLang 后端
 
+### RAG 对话机器人模块
+- **知识库检索**：从个人对话历史中快速找到相关信息
+- **向量数据库**：使用 ChromaDB 存储和检索向量
+- **智能分块**：保持语义完整的文档分割
+- **中文优化**：BGE 嵌入模型，针对中文优化
+- **灵活部署**：支持终端和 Web UI 两种模式
+
 ## 📚 使用示例
 
 ### 1. LoRA 微调示例
@@ -213,6 +262,37 @@ llamafactory-cli chat \
   template=qwen
 ```
 
+---
+
+## 🤖 RAG 对话机器人
+
+### 快速启动
+
+```bash
+# 运行终端版对话机器人
+python chat_bot.py
+```
+
+### 使用自己的聊天记录
+
+1. 将聊天记录放入 `rag/knowledge/` 目录
+2. 删除旧向量数据库：`rm -rf rag/vector_db/chroma`
+3. 重新运行：`python chat_bot.py`
+
+### RAG 架构
+
+```
+用户查询
+    ↓
+[嵌入模型] → 向量表示
+    ↓
+[向量数据库] → 检索 Top-K 文档
+    ↓
+[大语言模型] → 基于上下文生成回答
+    ↓
+返回答案
+```
+
 ## 🛠️ 开发工具
 
 项目提供了完整的开发工具链：
@@ -234,6 +314,19 @@ pre-commit install
 
 ## 📖 相关文档
 
+### LLaMA-Factory
+- [LLaMA-Factory 官方文档](https://llamafactory.readthedocs.io/)
+- [API 接口文档](http://localhost:8000/docs)
+- [配置文件示例](LLaMA-Factory/examples/)
+
+### RAG 对话机器人
+- [RAG 模块说明](rag/README.md)
+- [ChromaDB 文档](https://docs.trychroma.com/)
+- [BGE 嵌入模型](https://github.com/FlagOpen/FlagEmbedding)
+
+### 意图识别
+- [意图识别模块说明](intent_recognition/README.md)
+
 - [LLaMA-Factory 官方文档](https://llamafactory.readthedocs.io/)
 - [API 接口文档](http://localhost:8000/docs)
 - [配置文件示例](LLaMA-Factory/examples/)
@@ -251,6 +344,61 @@ pre-commit install
 - [LLaMA-Factory GitHub](https://github.com/hiyouga/LLaMA-Factory)
 - [Hugging Face](https://huggingface.co/)
 - [PyTorch](https://pytorch.org/)
+
+---
+
+## 🎉 项目进展
+
+### ✅ 已完成
+
+| 模块 | 状态 | 描述 |
+|------|------|------|
+| **LLaMA-Factory** | ✅ | 大模型微调框架已部署 |
+| **预装模型** | ✅ | DeepSeek-R1-Distill-Qwen-1.5B, Qwen2.5-7B-Instruct |
+| **RAG 系统** | ✅ | 完整的检索增强生成管道 |
+| **向量数据库** | ✅ | ChromaDB 向量存储 |
+| **文档加载器** | ✅ | 支持 txt, md, json 格式 |
+| **文本分块器** | ✅ | 智能分割保持语义完整 |
+| **嵌入模型** | ✅ | BGE 中文优化模型 |
+| **意图识别** | 🚧 | 基础框架已搭建 |
+
+### 🚧 进行中
+
+- **聊天记录解析** - 支持微信、ChatGPT 等多种格式
+- **Web UI 界面** - Gradio 网页版对话界面
+
+### 📋 待开发
+
+| 优先级 | 功能 | 描述 |
+|--------|------|------|
+| 🔴 高 | 聊天记录导入 | 批量导入个人对话历史 |
+| 🔴 高 | Web UI | 网页版对话界面 |
+| 🟡 中 | LLaMA-Factory API 集成 | 替代本地推理，提升速度 |
+| 🟡 中 | 意图识别 + RAG 融合 | 结合提升准确性 |
+| 🟢 低 | 多轮对话记忆 | 记住对话上下文 |
+| 🟢 低 | 知识库管理 | 可视化管理界面 |
+
+## 🔄 开发路线图
+
+### 阶段 1: 知识库建设
+- [x] RAG 核心框架
+- [ ] 聊天记录解析脚本
+- [ ] 批量导入工具
+
+### 阶段 2: 用户界面
+- [ ] Web UI (Gradio)
+- [ ] 知识库管理
+- [ ] 对话历史查看
+
+### 阶段 3: 性能优化
+- [ ] LLaMA-Factory API 集成
+- [ ] 模型推理加速
+- [ ] 缓存机制
+
+### 阶段 4: 功能增强
+- [ ] 意图识别集成
+- [ ] 多轮对话记忆
+- [ ] 个性化风格微调
 
 ---
 
